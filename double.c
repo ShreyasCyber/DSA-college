@@ -14,7 +14,7 @@ int loc, i;
 
 void addANode()
 {
-    p=(NODE *)malloc(sizeof(NODE));
+    p = (NODE *)malloc(sizeof(NODE));
     printf("\nEnter the data: ");
     scanf("%d", &p->data);
 
@@ -28,14 +28,14 @@ void addANode()
     {
         p->next = start;
         start->prev = p;
-        start = p;
         p->prev = NULL;
+        start = p;
     }
 }
 
 void addAtEnd()
 {
-    p=(NODE *)malloc(sizeof(NODE));
+    p = (NODE *)malloc(sizeof(NODE));
     printf("\nEnter the data: ");
     scanf("%d", &p->data);
 
@@ -48,7 +48,8 @@ void addAtEnd()
     else
     {
         q = start;
-        while(q->next != NULL)
+
+        while (q->next != NULL)
         {
             q = q->next;
         }
@@ -56,34 +57,32 @@ void addAtEnd()
         q->next = p;
         p->prev = q;
         p->next = NULL;
-
     }
-        
 }
 
 void addAtLocation()
 {
-    p = (NODE *)sizeof(NODE);
+    p = (NODE *)malloc(sizeof(NODE));
     printf("\nEnter the data: ");
     scanf("%d", &p->data);
     printf("\nEnter the location: ");
     scanf("%d", &loc);
 
-    if (start == NULL)
+    if (start == NULL) // list is empty
     {
         if (loc == 1)
         {
             p->next = NULL;
-            p->prev= NULL;
+            p->prev = NULL;
             start = p;
         }
         else
         {
-            printf("\nInvalid location");
+            printf("\nInvalid location!");
             free(p);
         }
     }
-    else
+    else // list containing some elements
     {
         if (loc == 1)
         {
@@ -96,40 +95,40 @@ void addAtLocation()
         {
             i = 1;
             q = start;
-            while (i < loc - 1 && q!= NULL)
+            while (i < loc - 1 && q != NULL)
             {
                 q = q->next;
                 i++;
             }
-            if (q!=NULL)
+            if (q != NULL)
             {
                 p->next = q->next;
-                if (q->next!= NULL)
+                if (q->next != NULL)
                 {
                     q->next->prev = p;
                 }
+
                 p->prev = q;
                 q->next = p;
             }
             else
             {
-                printf("\nInvalid location");
+                printf("\nInvalid location!");
                 free(p);
             }
         }
     }
-    
 }
 
 void deleteANode() {
     if (start == NULL)
     {
-        printf("\nLL is empty!");
+        printf("\nList is empty! Delete operation cant be completed!");
     }
     else
     {
         p = start;
-        start = start-> next;
+        start = start->next;
         if (p->next != NULL)
         {
             p->next->prev = NULL;
@@ -143,28 +142,103 @@ void deleteANode() {
 void deleteAtEnd() {
     if (start == NULL)
     {
-        printf("\nLL is empty!");
+        printf("\nList is empty! Delete operation cant be completed!");
+    }
+    else if (start->next == NULL)
+    {
+        p = start;
+        start = NULL;
+        printf("\nDeleted node is %d", p->data);
+        free(p);
     }
     else
     {
         p = start;
-        while (p->next != NULL) 
+        while (p->next !=NULL)
         {
             p = p->next;
         }
 
-        q = p->prev;
-        q -> next = NULL;
+        q = p-> prev;
+        q->next = NULL;
         printf("\nDeleted node is %d", p->data);
         free(p);
     }
     
+    
 }
 
-void deleteAtLocation() {}
+void deleteAtLocation()
+{
+    printf("\nEnter the location to delete: ");
+    scanf("%d", &loc);
+
+    if (start == NULL) // Empty list
+    {
+        printf("\nList is empty! Deletion can't be performed.");
+    }
+    else if (loc == 1) // Deleting the first node
+    {
+        p = start;
+        start = start->next;
+
+        if (start != NULL) // Update the previous pointer of the new start node
+        {
+            start->prev = NULL;
+        }
+        printf("\nDeleted node is %d", p->data);
+        free(p);
+    }
+    else // Deleting a node other than the first one
+    {
+        i = 1;
+        p = start;
+
+        // Traverse to the node at the specified location
+        while (i < loc && p != NULL)
+        {
+            p = p->next;
+            i++;
+        }
+
+        if (p != NULL) // Node found at the specified location
+        {
+            if (p->prev != NULL) // Update the next pointer of the previous node
+            {
+                p->prev->next = p->next;
+            }
+
+            if (p->next != NULL) // Update the previous pointer of the next node
+            {
+                p->next->prev = p->prev;
+            }
+
+            printf("\nDeleted node is %d", p->data);
+            free(p);
+        }
+        else
+        {
+            printf("\nInvalid location!");
+        }
+    }
+}
+
 
 void traverse()
 {
+    if (start == NULL)
+    {
+        printf("\nList is empty!");
+    }
+    else
+    {
+        q = start;
+        while (q != NULL)
+        {
+            printf("%d ", q->data);
+            q = q->next;
+        }
+    }
 }
 
 int main()
